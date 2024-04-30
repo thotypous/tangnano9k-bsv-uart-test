@@ -31,7 +31,7 @@ module mkUartTest(UartTest);
 
     // 40.500 MHz / 16 / 22  == 115057  ~ 115200
     // 40.500 MHz / 16 / 264 ==   9588  ~   9600
-    UART#(16) uart <- mkUART(8, NONE, STOP_1, 264, clocked_by clkgen.clkout, reset_by new_reset);
+    UART#(16) uart <- mkUART(8, NONE, STOP_1, 22, clocked_by clkgen.clkout, reset_by new_reset);
 
     Reg#(Bit#(6)) led_reg <- mkReg(0, clocked_by clkgen.clkout, reset_by new_reset);
 
