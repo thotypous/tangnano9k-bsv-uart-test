@@ -13,7 +13,6 @@ interface UartTest;
 endinterface
 
 (* synthesize *)
-
 module mkUartTest(UartTest);
     /* Target-Device:                GW1NR-9 C6/I5
      * Given input frequency:        27.000 MHz
