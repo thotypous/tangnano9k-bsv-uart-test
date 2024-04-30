@@ -17,21 +17,21 @@ endinterface
 module mkUartTest(UartTest);
     /* Target-Device:                GW1NR-9 C6/I5
      * Given input frequency:        27.000 MHz
-     * Requested output frequency:   65.536 MHz
-     * Achieved output frequency:    65.571 MHz
+     * Requested output frequency:   40.550 MHz
+     * Achieved output frequency:    40.500 MHz
      */
     GowinClockGen clkgen <- mkGowinClockGen(GowinClockGenParams {
         fclkin: "27",
-        idiv_sel: 6,
-        fbdiv_sel: 16,
-        odiv_sel: 8
+        idiv_sel: 1,
+        fbdiv_sel: 2,
+        odiv_sel: 16
     });
 
     Reset new_reset <- mkAsyncResetFromCR(3, clkgen.clkout);
 
-    // 65.571 MHz / 16 / 36  == 113839  ~ 115200
-    // 65.571 MHz / 16 / 427 ==   9598  ~   9600
-    UART#(16) uart <- mkUART(8, NONE, STOP_1, 427, clocked_by clkgen.clkout, reset_by new_reset);
+    // 40.500 MHz / 16 / 22  == 115057  ~ 115200
+    // 40.500 MHz / 16 / 264 ==   9588  ~   9600
+    UART#(16) uart <- mkUART(8, NONE, STOP_1, 264, clocked_by clkgen.clkout, reset_by new_reset);
 
     Reg#(Bit#(6)) led_reg <- mkReg(0, clocked_by clkgen.clkout, reset_by new_reset);
 
