@@ -1,7 +1,7 @@
 import serial
 import os
 
-BAUDRATE=1000000
+BAUDRATE=3000000
 
 # open twice to work around FTDI emulator apparent bug
 ser = serial.Serial('/dev/ttyUSB1', baudrate=BAUDRATE)
