@@ -18,7 +18,7 @@ The only way I found to reliably set the baud rate was a combination of GNU scre
 screen /dev/ttyUSB1 3000000,cs8,-parenb,cstopb
 ```
 
-Then close GNU screen by typing `Ctrl+A Ctrl+K y`.
+Then close GNU screen by typing `Ctrl+a k y`.
 
 Finally, run picocom and have fun:
 
