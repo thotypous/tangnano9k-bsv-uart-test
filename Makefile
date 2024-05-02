@@ -4,12 +4,12 @@ DEVICE=GW1NR-LV9QN88PC6/I5
 
 all: uart.fs
 
-mkUartTest.v: UartTest.bsv GowinPll.bsv
+mkUartTest.v: UartTest.bsv
 	bsc -p +:%/Libraries/FPGA/Misc/ -u -verilog UartTest.bsv
 
 # Synthesis
 uart.json: top.v mkUartTest.v
-	yosys -p "read_verilog /opt/bluespec/lib/Verilog/SizedFIFO.v; read_verilog /opt/bluespec/lib/Verilog/Counter.v; read_verilog /opt/bluespec/lib/Verilog/SyncResetA.v; read_verilog /opt/bluespec/lib/Verilog/ResetInverter.v; read_verilog mkUartTest.v; read_verilog top.v; synth_gowin -top top -json uart.json"
+	yosys -p "read_verilog /opt/bluespec/lib/Verilog/SizedFIFO.v; read_verilog /opt/bluespec/lib/Verilog/Counter.v; read_verilog mkUartTest.v; read_verilog pll.v; read_verilog top.v; synth_gowin -top top -json uart.json"
 
 # Place and Route
 uart_pnr.json: uart.json
