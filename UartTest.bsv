@@ -1,6 +1,5 @@
 import RS232::*;
 import GetPut::*;
-import Clocks::*;
 
 interface UartTest;
     interface RS232 rs232;
