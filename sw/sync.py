@@ -4,7 +4,7 @@ with open('acquired_data.bin', 'rb') as f:
 with open('reference_data.bin', 'rb') as f:
     reference_data = f.read()
 
-sync_sequence = reference_data[:2]
+sync_sequence = reference_data[:4]
 
 start = acquired_data.find(sync_sequence)
 
