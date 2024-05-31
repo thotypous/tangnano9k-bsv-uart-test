@@ -1,4 +1,5 @@
 *.bo
 *.ba
 mk*.v
+*.use
 *.fs
