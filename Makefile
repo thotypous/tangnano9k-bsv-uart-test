@@ -14,7 +14,8 @@ uart.json: top.v mkUartTest.v
 			echo "read_verilog /opt/bluespec/lib/Verilog/$$m.v; "; \
 		  done)\
 		read_verilog mkUartTest.v; \
-		read_verilog pll.v; \
+		read_verilog pll_main.v; \
+		read_verilog pll_uart.v; \
 		read_verilog top.v; \
 		synth_gowin -top top -json uart.json"
 
