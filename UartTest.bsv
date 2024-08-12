@@ -4,6 +4,8 @@ import FIFOF::*;
 import Connectable::*;
 import Clocks::*;
 import BUtils::*;
+import PAClib::*;
+import Vector::*;
 
 interface UartTest;
     interface RS232 rs232;
@@ -23,8 +25,17 @@ module mkUartTest#(Clock clk_uart)(UartTest);
     SyncFIFOIfc#(Bit#(8)) fifo_uart <- mkSyncFIFOFromCC(2, clk_uart);
     mkConnection(toGet(fifo_uart), uart.rx);
 
-    //FIFOF#(Bit#(8)) buffer <- mkGSizedFIFOF(True, False, 1600);
-    //mkConnection(toGet(buffer), toPut(fifo_uart));
+    FIFOF#(Bit#(8)) buffer <- mkSizedFIFOF(1600);
+    mkConnection(toGet(buffer), toPut(fifo_uart));
+
+    FIFOF#(Bit#(1)) deser_fifo <- mkGFIFOF(True, False);
+    PipeOut#(Bit#(8)) deser_pipe <- mkCompose(
+        mkCompose(
+            mkCompose(mkFn_to_Pipe(vecBind), mkUnfunnel(True)),
+            mkFn_to_Pipe(pack)),
+        mkFn_to_Pipe(reverseBits),
+        f_FIFOF_to_PipeOut(deser_fifo));
+    mkConnection(toGet(deser_pipe), toPut(buffer));
 
     Reg#(LBit#(TMul#(1600, 8))) trigger_left <- mkReg(0);
     let is_trigged = trigger_left != 0;
@@ -32,6 +43,7 @@ module mkUartTest#(Clock clk_uart)(UartTest);
     Reg#(Bit#(1)) prev <- mkReg(0);
     Reg#(Bit#(16)) how_long <- mkReg(0);
     Reg#(Bit#(6)) strikes <- mkReg(0);
+    Reg#(Bool) first_trigger <- mkReg(True);
 
     Reg#(Bit#(6)) led_reg <- mkReg(0);
 
@@ -40,10 +52,16 @@ module mkUartTest#(Clock clk_uart)(UartTest);
     endrule
 
     method Action put_eth_rx(Bit#(1) eth_rx);
-        led_reg <= (led_reg << 1) | extend(eth_rx);
+        led_reg <= is_trigged ? 1 : 0;
 
         prev <= eth_rx;
         if (is_trigged) begin
+            if (first_trigger)
+                deser_fifo.enq(eth_rx);
+
+            if (trigger_left == 1)
+                first_trigger <= False;
+
             trigger_left <= trigger_left - 1;
             how_long <= 0;
             strikes <= 0;
@@ -69,3 +87,7 @@ module mkUartTest#(Clock clk_uart)(UartTest);
     method led = ~led_reg;
     method dbg = is_trigged ? 1 : 0;
 endmodule
+
+function a vecUnbind(Vector#(1,a) vec) = vec[0];
+
+function Vector#(1,a) vecBind(a value) = cons(value, nil);
