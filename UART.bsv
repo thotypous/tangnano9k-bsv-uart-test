@@ -27,7 +27,7 @@ import Connectable::*;
 
 // Parameters ...
 typedef 115_200      BaudRate;
-typedef 27_000_000   ClockFreq;
+typedef 48_000_000   ClockFreq;
 typedef TDiv#(ClockFreq, BaudRate) BaudCycles;
 
 typedef Bit#(8) Byte;
