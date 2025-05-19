@@ -15,7 +15,7 @@ USB UART in Tang Nano 9k is an emulated FTDI which seems to be a little buggy.
 The only way I found to reliably set the baud rate was a combination of GNU screen and picocom. Right after loading the bitfile to board, run:
 
 ```
-screen /dev/ttyUSB1 3000000,cs8,-parenb,cstopb
+screen /dev/ttyUSB1 115200,cs8,-parenb,cstopb
 ```
 
 Then close GNU screen by typing `Ctrl+a k y`.
@@ -23,5 +23,5 @@ Then close GNU screen by typing `Ctrl+a k y`.
 Finally, run picocom and have fun:
 
 ```
-picocom -b 3000000 -d 8 -p 1 -y n /dev/ttyUSB1
+picocom -b 115200 -d 8 -p 1 -y n /dev/ttyUSB1
 ```

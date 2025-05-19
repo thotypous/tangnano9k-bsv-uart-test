@@ -20,7 +20,7 @@ uart.json: top.v mkUartTest.v
 
 # Place and Route
 uart_pnr.json: uart.json
-	nextpnr-himbaechel --json uart.json --write uart_pnr.json --freq 27 --device ${DEVICE} --vopt family=${FAMILY} --vopt cst=${BOARD}.cst
+	nextpnr-himbaechel --json uart.json --write uart_pnr.json --freq 48 --device ${DEVICE} --vopt family=${FAMILY} --vopt cst=${BOARD}.cst
 
 # Generate Bitstream
 uart.fs: uart_pnr.json
