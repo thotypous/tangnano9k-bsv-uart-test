@@ -12,7 +12,7 @@ endinterface
 
 (* synthesize *)
 module mkUartTest(UartTest);
-    UART#(16) uart <- mkUART(8, NONE, STOP_1, 26);
+    UART#(16) uart <- mkUART(8, NONE, STOP_1, 1);
 
     Reg#(LBit#(48600000)) espera <- mkReg(0);
     Reg#(Bit#(6)) counter[2] <- mkCReg(2, 0);
