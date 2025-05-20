@@ -9,7 +9,7 @@ endinterface
 
 (* synthesize *)
 module mkUartTest(UartTest);
-    UART#(16) uart <- mkUART(8, NONE, STOP_1, 26);
+    UART#(16) uart <- mkUART(8, NONE, STOP_1, 1);
 
     Reg#(Bit#(6)) led_reg <- mkReg(0);
 
